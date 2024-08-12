@@ -3,19 +3,46 @@ import { useForm } from 'react-hook-form'
 import Input from 'src/components/Form'
 import { schema, Schema } from 'src/utils/roules'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
+import { registerApi } from 'src/apis/auth.api'
+import { omit } from 'lodash'
+import { isAxiosUnprocessableEntity } from 'src/utils/utils'
+import { ResponseAPI } from 'src/types/utils.type'
 
 type FormData = Schema
 const Register = () => {
   const {
     register,
     formState: { errors },
-    handleSubmit
+    handleSubmit,
+    setError
   } = useForm<FormData>({
     resolver: yupResolver(schema)
   })
 
+  const registerAccountMutation = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerApi(body),
+    onSuccess: (data) => {
+      console.log(data)
+    },
+    onError: (error) => {
+      if (isAxiosUnprocessableEntity<ResponseAPI<Omit<FormData, 'confirm_password'>>>(error)) {
+        const formError = error.response?.data.data
+        if (formError) {
+          Object.entries(formError).forEach(([key, value]) => {
+            setError(key as keyof Omit<FormData, 'confirm_password'>, {
+              type: 'manual',
+              message: value
+            })
+          })
+        }
+      }
+    }
+  })
+
   const onSubmit = handleSubmit((data: FormData) => {
-    console.log(data)
+    const body = omit(data, ['confirm_password'])
+    registerAccountMutation.mutate(body)
   })
 
   return (
