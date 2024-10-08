@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { logout } from 'src/apis/auth.api'
+import authApi from 'src/apis/auth.api'
 import { Popover } from 'src/components'
 import path from 'src/constants/path'
 import { AppContext } from 'src/context/app.context'
@@ -11,7 +11,7 @@ type Props = {}
 const NavHeader = (props: Props) => {
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
   const logoutMutation = useMutation({
-    mutationFn: logout,
+    mutationFn: authApi.logout,
     onSuccess: () => {
       setProfile(null)
       setIsAuthenticated(false)
@@ -21,8 +21,9 @@ const NavHeader = (props: Props) => {
   const handleLogout = () => {
     logoutMutation.mutate()
   }
+
   return (
-    <div className='flex justify-end gap-3'>
+    <div className='flex justify-end gap-3 mx-10'>
       <Popover
         className='flex cursor-pointer items-center py-1 hover:text-white/70'
         renderPopover={

@@ -6,7 +6,7 @@ type Props = {}
 
 const Header = (props: Props) => {
   return (
-    <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white px-[10px]'>
+    <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white px-[100px]'>
       <div className='container'>
         <NavHeader />
         <div className='mt-4 grid grid-cols-12 items-end gap-4'>

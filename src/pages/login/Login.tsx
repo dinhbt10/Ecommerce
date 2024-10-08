@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { loginApi } from 'src/apis/auth.api'
+import authApi from 'src/apis/auth.api'
 import { Button } from 'src/components'
 import Input from 'src/components/Form'
 import { AppContext } from 'src/context/app.context'
@@ -27,7 +27,7 @@ const Login = () => {
   })
 
   const loginAccountMutation = useMutation({
-    mutationFn: (body: FormData) => loginApi(body),
+    mutationFn: (body: FormData) => authApi.loginApi(body),
     onSuccess: (data) => {
       setProfile(data.data.data.user)
       setIsAuthenticated(true)
