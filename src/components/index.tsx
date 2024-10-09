@@ -1,3 +1,4 @@
 import Button from './Button'
 import Popover from './Popover'
-export { Popover, Button }
+import Paginations from './Paginations'
+export { Popover, Button, Paginations }
